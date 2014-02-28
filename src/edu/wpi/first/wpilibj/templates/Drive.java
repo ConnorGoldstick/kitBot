@@ -44,6 +44,7 @@ public class Drive extends Thread {
                 if (turn < 0.1 && turn > -0.1) { //maybe need to adjust this
                     turn = 0;
                 }
+                /*
                 if (xBox.getRawButton(1)) {
                     sol1.set(false);
                     sol2.set(true);
@@ -52,6 +53,7 @@ public class Drive extends Thread {
                     sol1.set(true);
                     sol2.set(false);
                 }
+                */
                 if (Math.abs((speed - turn) - leftspeed) < .075/*
                          * .075
                          */) { //don't skip target
@@ -83,9 +85,9 @@ public class Drive extends Thread {
                     leftspeed = 0;
                 }
                 jagleft1.set(leftspeed);
-                jagleft2.set(leftspeed);
+                // jagleft2.set(leftspeed);
                 jagright3.set(-(rightspeed));
-                jagright4.set(-(rightspeed));
+                // jagright4.set(-(rightspeed));
             }
         }
     }
