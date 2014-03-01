@@ -19,7 +19,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class CentralCode extends IterativeRobot {
 
-    Jaguar jag1, jag2, jag3, jag4;
+    Jaguar jagleft, jagright;
     Joystick xBox;
     Victor victor;
     Solenoid sol1, sol2, sol4, sol5, sol7, sol8;
@@ -40,11 +40,9 @@ public class CentralCode extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
-        jag1 = new Jaguar(1);
-        jag2 = new Jaguar(2);
-        jag3 = new Jaguar(3);
-        jag4 = new Jaguar(4);
-        victor = new Victor(5);
+        jagleft = new Jaguar(1);
+        jagright = new Jaguar(2);
+        victor = new Victor(3);
 
         sol1 = new Solenoid(1);
         sol2 = new Solenoid(2);
@@ -81,7 +79,7 @@ public class CentralCode extends IterativeRobot {
         afterShoot = false;
         checkGyro = true;
 
-        drive = new Drive(jag1, jag2, jag3, jag4, sol1, sol2, xBox);
+        drive = new Drive(jagleft, jagright, sol1, sol2, xBox);
         loadAndShoot = new loadAndShoot(encoder, victor, sol4, sol5, sol7, sol8, xBox, digi14, digi13, digi3, smart);
         drive.start();
         loadAndShoot.start();
@@ -121,16 +119,12 @@ public class CentralCode extends IterativeRobot {
         if (!checkGyro && !atShoot) { //if program does not know it's in range, do the following
             if (ultrasonic.getVoltage() > 0.86) { //if not in range, do the following
                 conf = conf + SmartDashboard.getNumber("Confidence") - 70; //add to the total confidence
-                jag1.set(-0.648); //move towards the goal
-                jag2.set(-0.648);
-                jag3.set(0.6);
-                jag4.set(0.6);
+                jagleft.set(-0.648); //move towards the goal
+                jagright.set(0.6);
                 System.out.println("Driving forwards.");
             } else { //once in range, do the follwing
-                jag1.set(0); //stop moving forwards
-                jag2.set(0);
-                jag3.set(0);
-                jag4.set(0);
+                jagleft.set(0); //stop moving forwards
+                jagright.set(0);
                 checkGyro = true; // tell the program to check the gyro
                 System.out.println("Checking gyro.");
             }
@@ -138,33 +132,25 @@ public class CentralCode extends IterativeRobot {
         if (checkGyro) {
             gyroTimer++;
             if (gyro.getAngle() < -2) { //if the robot is pointed to the left, do the following
-                jag1.set(-0.108); //turn right
-                jag2.set(-0.108);
-                jag3.set(-0.1);
-                jag4.set(-0.1);
+                jagleft.set(-0.108); //turn right
+                jagright.set(-0.1);
                 System.out.println("Orienting right.");
             }
             if (gyro.getAngle() > 2) { //if the robot is pointed to the right, do the following
-                jag1.set(0.108); //turn left
-                jag2.set(0.108);
-                jag3.set(0.1);
-                jag4.set(0.1);
+                jagleft.set(0.108); //turn right
+                jagright.set(0.1);
                 System.out.println("Orienting left.");
             }
             if (gyro.getAngle() > -2 && gyro.getAngle() < 2) { // if the robot is pointed towards the goal, do the following
-                jag1.set(0); //stop the motion of the robot
-                jag2.set(0);
-                jag3.set(0);
-                jag4.set(0);
+                jagleft.set(0); //stop the motion of the robot
+                jagright.set(0);
                 checkGyro = false; //stop looking at the gyro
                 atShoot = true; //tell the program that the robot is in position
                 System.out.println("Oriented.");
             }
             if (gyroTimer == 30) { //after three fifths second of checking the gyro, do the following
-                jag1.set(0); //stop the motion of the robot
-                jag2.set(0);
-                jag3.set(0);
-                jag4.set(0);
+                jagleft.set(0); //stop the motion of the robot
+                jagright.set(0);
                 checkGyro = false; //stop looking at the gyro
                 atShoot = true; //tell the program that the robot is in position
                 System.out.println("Gyro check timed out.");
@@ -194,10 +180,8 @@ public class CentralCode extends IterativeRobot {
         if (afterShoot) { //once the program knows it has fired, do the following
             if (endTimer < 100) { // for two seconds after firing, do the following
                 endTimer++; //run the ending timer
-                jag1.set(0); //stop any motion of the robot
-                jag2.set(0);
-                jag3.set(0);
-                jag4.set(0);
+                jagleft.set(0); //stop any motion of the robot
+                jagright.set(0);
                 if (endTimer == 100) { //at end of autonomous, do the following
                     System.out.println("Autonomous Complete.");
                 }

@@ -10,17 +10,15 @@ import edu.wpi.first.wpilibj.Solenoid;
 
 public class Drive extends Thread {
 
-    Jaguar jagleft1, jagright3, jagleft2, jagright4;
+    Jaguar jagleft1, jagright2;
     Solenoid sol1, sol2;
     Joystick xBox;
     boolean running = false;
     double speed, turn, leftspeed, rightspeed;
 
-    public Drive(Jaguar j1, Jaguar j2, Jaguar j3, Jaguar j4, Solenoid s1, Solenoid s2, Joystick x) {
+    public Drive(Jaguar j1, Jaguar j2,Solenoid s1, Solenoid s2, Joystick x) {
         jagleft1 = j1;
-        jagleft2 = j2;
-        jagright3 = j3;
-        jagright4 = j4;
+        jagright2 = j2;
         sol1 = s1;
         sol2 = s2;
         xBox = x;
@@ -86,7 +84,7 @@ public class Drive extends Thread {
                 }
                 jagleft1.set(leftspeed);
                 // jagleft2.set(leftspeed);
-                jagright3.set(-(rightspeed));
+                jagright2.set(-(rightspeed));
                 // jagright4.set(-(rightspeed));
             }
         }
